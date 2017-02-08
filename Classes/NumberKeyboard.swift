@@ -1,0 +1,618 @@
+//
+//  NumberKeyboard.swift
+//  NumberKeyboard
+//
+//  Created by Maksym Prokopchuk on 9/2/17.
+//  Copyright © 2017 Maksym Prokopchuk. All rights reserved.
+//
+
+import UIKit
+
+// check only one decimal point
+// keyInput how to set when textField is become first responder
+
+/// A simple keyboard to use with numbers and, optionally, a decimal point.
+@objc class NumberKeyboard: UIInputView, UIInputViewAudioFeedback {
+
+    // MARK: - UIInputViewAudioFeedback
+    var enableInputClicksWhenVisible: Bool = true
+
+    // MARK: - Constants
+//    MMNumberKeyboardRows
+    let keyboardRows       = 4
+//    MMNumberKeyboardRowHeight
+    let rowHeight: CGFloat          = 55.0
+//    MMNumberKeyboardPadBorder
+    let keyboardPadBorder: CGFloat  = 7.0
+//    MMNumberKeyboardPadSpacing
+    let keyboardPadSpacing: CGFloat = 8.0
+
+    // MARK: - Public Properties
+    /// The receiver key input object. If nil the object at top of the responder chain is used.
+    weak var keyInput: UIKeyInput?
+
+    /// Delegate to change text insertion or return key behavior.
+    weak var delegate: NumberKeyboardDelegate?
+
+    /**
+     If YES, the decimal separator key will be displayed.
+     - note: The default value of this property is **NO**.
+     */
+    var allowsDecimalPoint = false
+
+    // UIKitLocalizedString(@"Done");
+    /**
+     The visible title of the Return key.
+     - note: The default visible title of the Return key is "**Done**".
+     */
+    lazy var returnKeyTitle: String = "Done"
+
+    /**
+     The button style of the Return key.
+     - note: The default value of this property is **NumberKeyboardButtonStyleDone**.
+     */
+    var returnKeyButtonStyle: NumberKeyboardButtonStyle = .done
+
+
+    // MARK: - Private Properties
+    lazy fileprivate(set) var locale = Locale.current
+
+    fileprivate var buttons : [Int: UIButton]!
+
+    /// Initialize an array for the separators.
+    fileprivate lazy var separatorViews = [UIView]()
+//    fileprivate lazy var separatorViews : [UIView] = {
+//        var separatorViews = [UIView]()
+//        let numbersPerLine = 3
+//        let totalColumns = 4
+//        let totalRows = numbersPerLine + 1
+//        let numberOfSeparators = totalColumns + totalRows - 1
+//        var separatorsToInsert = numberOfSeparators
+//
+//        while separatorsToInsert > 0 {
+//            let separator = UIView(frame: CGRect.zero)
+//            separator.backgroundColor = UIColor(white: 0.0, alpha: 0.1)
+//            self.addSubview(separator)
+//            separatorViews.append(separator)
+//            separatorsToInsert -= 1
+//        }
+//
+//        return separatorViews
+//    }()
+
+    // MARK: - Initializers
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    /**
+        Initializes and returns a number keyboard view using the specified style information and locale.
+     
+        An initialized view object or nil if the view could not be initialized.
+        - parameters:
+            - frame: The frame rectangle for the view, measured in points. The origin of the frame is relative to the superview in which you plan to add it.
+            - inputViewStyle: The style to use when altering the appearance of the view and its subviews. For a list of possible values, see **UIInputViewStyle**
+            - locale: An **Locale** object that specifies options (specifically the **LocaleDecimalSeparator**) used for the keyboard. Specify nil if you want to use the current locale.
+
+     */
+    convenience init(frame: CGRect, inputViewStyle: UIInputViewStyle, locale: Locale) {
+        self.init(frame: frame, inputViewStyle: inputViewStyle)
+        self.locale = locale
+    }
+
+    override init(frame: CGRect, inputViewStyle: UIInputViewStyle) {
+        super.init(frame: frame, inputViewStyle: inputViewStyle)
+        self.p_initialSetup()
+    }
+
+    // MARK: - Accessing keyboard images.
+    fileprivate class func p_keyboardImageNamed(_ imageName: String) -> UIImage? {
+        let imageExtension = "png"
+
+        var image : UIImage?
+        let bundle = Bundle(for: NumberKeyboard.self)
+        if let imagePath = bundle.path(forResource: imageName, ofType: imageExtension) {
+            image = UIImage(contentsOfFile: imagePath)
+        }
+        else {
+            image = UIImage(named: imageName)
+        }
+
+        return image
+    }
+
+    func p_initialSetup() {
+
+        var buttonFont : UIFont
+        var doneButtonFont : UIFont
+        if #available(iOS 8.2, *) {
+            buttonFont = UIFont.systemFont(ofSize: 28.0, weight: UIFontWeightLight)
+            doneButtonFont = UIFont.systemFont(ofSize: 17.0)
+        }
+        else {
+            buttonFont = UIFont(name: "HelveticaNeue-Light", size: 28.0)!
+            doneButtonFont = UIFont(name: "HelveticaNeue", size: 17.0)!
+        }
+
+        var buttons = [Int: UIButton]()
+
+        let numberMin = NumberKeyboardButtonType.numberMin.rawValue
+        let numberMax = NumberKeyboardButtonType.numberMax.rawValue
+        for key in numberMin...numberMax {
+            let button = NumberKeyboardButton(style: .white)
+
+            let title = String(key)
+            button.setTitle(title, for: .normal)
+            button.titleLabel?.font = buttonFont
+            button.addTarget(self, action: #selector(p_tapKeyNumber(button:)), for: .touchUpInside)
+
+            buttons[key] = button
+        }
+
+        let backspaceImage = NumberKeyboard.p_keyboardImageNamed("MMNumberKeyboardDeleteKey")?.withRenderingMode(.alwaysTemplate)
+
+        let backspaceButton = NumberKeyboardButton(style: .gray)
+        backspaceButton.addTarget(self, action: #selector(p_tapBackspaceKey(button:)), for: .touchUpInside)
+        backspaceButton.addTarget(self, action: #selector(p_tapBackspaceRepeat(button:)), forContinuousPress: 0.15)
+        backspaceButton.setImage(backspaceImage, for: .normal)
+        buttons[NumberKeyboardButtonType.backspace.rawValue] = backspaceButton
+
+
+        let specialButton = NumberKeyboardButton(style: .gray)
+        specialButton.addTarget(self, action: #selector(p_tapSpecialKey(button:)), for: .touchUpInside)
+        buttons[NumberKeyboardButtonType.special.rawValue] = specialButton
+
+
+        let doneButton = NumberKeyboardButton(style: .done)
+        doneButton.addTarget(self, action: #selector(p_tapDoneKey(button:)), for: .touchUpInside)
+        doneButton.titleLabel?.font = doneButtonFont
+        doneButton.setTitle("Done", for: .normal)
+        buttons[NumberKeyboardButtonType.done.rawValue] = doneButton
+
+        let decimalPointButton = NumberKeyboardButton(style: .white)
+        decimalPointButton.addTarget(self, action: #selector(p_tapDecimalPointKey(button:)), for: .touchUpInside)
+//        NSLocale *locale = self.locale ?: [NSLocale currentLocale];
+//        let decimalSeparator = [self.locale objectForKey:NSLocaleDecimalSeparator];
+
+        decimalPointButton.setTitle(".", for: .normal)
+        buttons[NumberKeyboardButtonType.decimalPoint.rawValue] = decimalPointButton
+
+        for (_, button) in buttons {
+            button.isExclusiveTouch = true
+            button.addTarget(self, action: #selector(p_playClick(button:)), for: .touchDown)
+            self.addSubview(button)
+        }
+
+//        let highlightGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(_handleHighlightGestureRecognizer:))
+//        self.addGestureRecognizer(highlightGestureRecognizer)
+
+        self.buttons = buttons;
+
+//        // Add default action.
+        let dismissImage = NumberKeyboard.p_keyboardImageNamed("MMNumberKeyboardDismissKey")?.withRenderingMode(.alwaysTemplate)
+        self.configureSpecialKey(image: dismissImage, target: self, action: #selector(p_dismissKeyboard))
+
+        // Add default return key title.
+//        [self setReturnKeyTitle:[self defaultReturnKeyTitle]];
+//        
+        // Add default return key style.
+//        [self setReturnKeyButtonStyle:MMNumberKeyboardButtonStyleDone];
+//        
+        // Size to fit.
+        self.sizeToFit()
+    }
+
+    // MARK: -
+    /**
+        Configures the special key with an image and an action block.
+        - parameters:
+            - image: The image to display in the key.
+            - handler: A handler block.
+     */
+    func configureSpecialKey(image: UIImage?, actionHandler handler: dispatch_block_t) {
+//        if (image) {
+//            self.specialKeyHandler = handler;
+//        } else {
+//            self.specialKeyHandler = NULL;
+//        }
+
+        guard let button = self.buttons[NumberKeyboardButtonType.special.rawValue] else { return }
+        button.setImage(image, for: .normal)
+    }
+
+    /**
+        Configures the special key with an image and a target-action.
+        - parameters:
+            - image: The image to display in the key.
+            - target: The target object—that is, the object to which the action message is sent.
+            - action: A selector identifying an action message.
+     */
+    func configureSpecialKey(image: UIImage?, target: Any?, action: Selector) {
+        guard let button = self.buttons[NumberKeyboardButtonType.special.rawValue] else { return }
+        button.setImage(image, for: .normal)
+
+//        __weak typeof(self)weakTarget = target;
+//        __weak typeof(self)weakSelf = self;
+//
+//        [self configureSpecialKeyWithImage:image actionHandler:^{
+//            __strong __typeof(&*weakTarget)strongTarget = weakTarget;
+//            __strong __typeof(&*weakSelf)strongSelf = weakSelf;
+//
+//            if (strongTarget) {
+//            NSMethodSignature *methodSignature = [strongTarget methodSignatureForSelector:action];
+//            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
+//            [invocation setSelector:action];
+//            if (methodSignature.numberOfArguments > 2) {
+//            [invocation setArgument:&strongSelf atIndex:2];
+//            }
+//            [invocation invokeWithTarget:strongTarget];
+//            }
+//            }];
+    }
+
+
+    // MARK: - 
+    func p_handleHighlight(gestureRecognizer : UIPanGestureRecognizer) {
+//        CGPoint point = [gestureRecognizer locationInView:self];
+//
+//        if (gestureRecognizer.state == UIGestureRecognizerStateChanged || gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+//            for (UIButton *button in self.buttonDictionary.objectEnumerator) {
+//                BOOL points = CGRectContainsPoint(button.frame, point) && !button.isHidden;
+//
+//                if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
+//                    [button setHighlighted:points];
+//                } else {
+//                    [button setHighlighted:NO];
+//                }
+//
+//                if (gestureRecognizer.state == UIGestureRecognizerStateEnded && points) {
+//                    [button sendActionsForControlEvents:UIControlEventTouchUpInside];
+//                }
+//            }
+//        }
+    }
+
+    // MARK: - Handle Actions
+    func p_playClick(button: NumberKeyboardButton) {
+        UIDevice.current.playInputClick()
+    }
+
+    func p_tapKeyNumber(button: NumberKeyboardButton) {
+        guard self.buttons.values.contains(button) else { return }
+
+        // Get first responder.
+        guard let keyInput = self.keyInput else { return }
+        guard let title = button.title(for: .normal) else { return }
+
+        // Handle number.
+        if let shouldInsert = self.delegate?.numberKeyboard?(self, shouldInsertText: title) {
+            guard shouldInsert == true else { return }
+        }
+
+        keyInput.insertText(title)
+    }
+
+    func p_tapSpecialKey(button: NumberKeyboardButton) {
+        guard self.buttons.values.contains(button) else { return }
+
+        // Handle special key.
+//        guard let handler = self.spea else { return }
+
+//        dispatch_block_t handler = self.specialKeyHandler;
+//        if (handler) {
+//            handler();
+//        }
+
+    }
+
+    func p_tapDecimalPointKey(button: NumberKeyboardButton) {
+        guard self.buttons.values.contains(button) else { return }
+
+        // Get first responder.
+        guard let keyInput = self.keyInput else { return }
+        guard let decimalText = button.title(for: .normal) else { return }
+
+        // Handle decimal point.
+        if let shouldInsert = self.delegate?.numberKeyboard?(self, shouldInsertText: decimalText) {
+            guard shouldInsert == true else { return }
+        }
+
+        keyInput.insertText(decimalText)
+    }
+
+    func p_tapBackspaceKey(button: NumberKeyboardButton) {
+        guard self.buttons.values.contains(button) else { return }
+
+        // Get first responder.
+        guard let keyInput = self.keyInput else { return }
+
+        // Handle backspace.
+        if let shouldDeleteBackward = self.delegate?.numberKeyboardShouldDeleteBackward?(self) {
+            guard shouldDeleteBackward == true else { return }
+        }
+
+        keyInput.deleteBackward()
+    }
+
+    func p_tapDoneKey(button: NumberKeyboardButton) {
+        guard self.buttons.values.contains(button) else { return }
+
+        // Handle done.
+        if let shouldReturn = self.delegate?.numberKeyboardShouldReturn?(self) {
+            guard shouldReturn == true else { return }
+        }
+
+        self.p_dismissKeyboard()
+    }
+
+    func p_tapBackspaceRepeat(button: NumberKeyboardButton) {
+        guard self.buttons.values.contains(button) else { return }
+
+        // Get first responder.
+        guard let keyInput = self.keyInput else { return }
+        guard keyInput.hasText else { return }
+
+        self.p_playClick(button: button)
+        self.p_tapBackspaceKey(button: button)
+    }
+
+    // MARK: -
+    func p_dismissKeyboard() {
+        guard let keyInput = self.keyInput as? UIResponder else { return }
+        keyInput.resignFirstResponder()
+    }
+
+    // MARK: - Layout
+    @inline(__always) func p_(rect: CGRect, contentOrigin: CGPoint, interfaceIdiom: UIUserInterfaceIdiom) -> CGRect {
+        let newRect = rect.offsetBy(dx: contentOrigin.x, dy: contentOrigin.y)
+
+//        if (interfaceIdiom == UIUserInterfaceIdiomPad) {
+//            CGFloat inset = MMNumberKeyboardPadSpacing / 2.0f;
+//            rect = CGRectInset(rect, inset, inset);
+//        }
+        
+        return newRect
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        guard let buttons = self.buttons else { return }
+
+//        CGRect bounds = (CGRect){
+//            .size = self.bounds.size
+//        };
+        let bounds = self.bounds
+
+//        // Settings.
+        let interfaceIdiom = UI_USER_INTERFACE_IDIOM()
+        let spacing : CGFloat = (interfaceIdiom == .pad) ? self.keyboardPadBorder : 0.0
+        let maximumWidth : CGFloat = (interfaceIdiom == .pad) ? 400.0 : bounds.width
+        let allowsDecimalPoint = self.allowsDecimalPoint
+
+        let width = min(maximumWidth, bounds.width);
+        let contentRect = CGRect(x: round(bounds.width - width) / 2.0,
+                                 y: spacing,
+                                 width: width,
+                                 height: (bounds.height - spacing * 2.0))
+
+        // Layout.
+        let columnWidth = contentRect.width / 4.0;
+        let rowHeight = self.rowHeight;
+
+        let numberSize = CGSize(width: columnWidth, height: rowHeight)
+
+        // Layout numbers.
+        let numberMin = NumberKeyboardButtonType.numberMin.rawValue
+        let numberMax = NumberKeyboardButtonType.numberMax.rawValue
+        let numbersPerLine = 3
+
+        for key in numberMin...numberMax {
+            let button = buttons[key]
+
+            let digit = key - numberMin
+
+            var rect = CGRect(origin: CGPoint.zero, size: numberSize)
+
+            if digit == 0 {
+                rect.origin.y = numberSize.height * 3;
+                rect.origin.x = numberSize.width;
+
+                if !allowsDecimalPoint {
+                    rect.size.width = numberSize.width * 2.0;
+                    button?.contentEdgeInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: numberSize.width)
+                }
+            }
+            else {
+                let idx = digit - 1
+
+                let line = idx / numbersPerLine
+                let pos = idx % numbersPerLine
+
+                rect.origin.y = CGFloat(line) * numberSize.height
+                rect.origin.x = CGFloat(pos) * numberSize.width
+            }
+
+            button?.frame = self.p_(rect: rect, contentOrigin: contentRect.origin, interfaceIdiom: interfaceIdiom)
+        }
+
+        // Layout special key.
+
+        if let specialKey = buttons[NumberKeyboardButtonType.special.rawValue] {
+            var rect = CGRect(origin: CGPoint.zero, size: numberSize)
+            rect.origin.y = numberSize.height * 3
+
+            specialKey.frame = self.p_(rect: rect, contentOrigin: contentRect.origin, interfaceIdiom: interfaceIdiom)
+        }
+
+        // Layout decimal point.
+        if let decimalPointKey = buttons[NumberKeyboardButtonType.decimalPoint.rawValue] {
+            var rect = CGRect(origin: CGPoint.zero, size: numberSize)
+            rect.origin.x = numberSize.width * 2
+            rect.origin.y = numberSize.height * 3
+
+            decimalPointKey.frame = self.p_(rect: rect, contentOrigin: contentRect.origin, interfaceIdiom: interfaceIdiom)
+            decimalPointKey.isHidden = !allowsDecimalPoint
+        }
+
+        // Layout utility column.
+        let utilityButtonKeys = [NumberKeyboardButtonType.backspace.rawValue, NumberKeyboardButtonType.done.rawValue]
+        let utilitySize = CGSize(width: columnWidth, height: rowHeight * 2.0);
+
+        for (index, key) in utilityButtonKeys.enumerated() {
+            let button = buttons[key]
+            var rect = CGRect(origin: CGPoint.zero, size: utilitySize)
+            rect.origin.x = columnWidth * 3.0
+            rect.origin.y = CGFloat(index) * utilitySize.height
+            button?.frame = self.p_(rect: rect, contentOrigin: contentRect.origin, interfaceIdiom: interfaceIdiom)
+        }
+
+        // Layout separators if phone.
+        if interfaceIdiom == .phone {
+            var separatorViews = self.separatorViews
+
+            let totalColumns = 4
+            let totalRows = numbersPerLine + 1
+            let numberOfSeparators = totalColumns + totalRows - 1
+
+            if separatorViews.count != numberOfSeparators {
+                let delta = numberOfSeparators - separatorViews.count
+                let removes = separatorViews.count > numberOfSeparators
+                if removes {
+//                    NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, delta)];
+//                    [[separatorViews objectsAtIndexes:indexes] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+//                    [separatorViews removeObjectsAtIndexes:indexes];
+                }
+                else {
+                    var separatorsToInsert = delta;
+                    while separatorsToInsert > 0 {
+                        let separator = UIView(frame: CGRect.zero)
+                        separator.backgroundColor = UIColor(white: 0.0, alpha: 0.1)
+                        self.addSubview(separator)
+                        separatorViews.append(separator)
+                        separatorsToInsert -= 1
+                    }
+                }
+            }
+
+            var scale : CGFloat = 1.0
+            if let window = self.window {
+                scale = window.screen.scale
+            }
+
+            let separatorDimension : CGFloat = 1.0 / scale
+
+            for (index, separator) in separatorViews.enumerated() {
+                var rect = CGRect.zero
+
+                if index < totalRows {
+                    rect.origin.y = CGFloat(index) * rowHeight
+
+                    if index % 2 == 1 {
+                        rect.size.width = contentRect.width - CGFloat(columnWidth)
+                    }
+                    else {
+                        rect.size.width = contentRect.width
+                    }
+
+                    rect.size.height = separatorDimension
+                }
+                else {
+                    let col = index - totalRows
+
+                    rect.origin.x = CGFloat(col + 1) * columnWidth
+                    rect.size.width = separatorDimension
+
+                    if col == 1, !allowsDecimalPoint {
+                        rect.size.height = contentRect.height - rowHeight
+                    }
+                    else {
+                        rect.size.height = contentRect.height
+                    }
+                }
+
+                separator.frame = self.p_(rect: rect, contentOrigin: contentRect.origin, interfaceIdiom: interfaceIdiom)
+            }
+        }
+    }
+
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
+        let interfaceIdiom = UI_USER_INTERFACE_IDIOM();
+        let spacing = (interfaceIdiom == .pad) ? self.keyboardPadBorder : 0.0;
+
+        var newSize = size
+        newSize.height = self.rowHeight * CGFloat(self.keyboardRows) + spacing * 2.0
+
+        if (newSize.width == 0.0) {
+            newSize.width = UIScreen.main.bounds.size.width
+        }
+
+        return newSize
+    }
+
+//    - (void)setAllowsDecimalPoint:(BOOL)allowsDecimalPoint
+//    {
+//    if (allowsDecimalPoint != _allowsDecimalPoint) {
+//    _allowsDecimalPoint = allowsDecimalPoint;
+//
+//    [self setNeedsLayout];
+//    }
+//    }
+//
+//    - (void)setReturnKeyTitle:(NSString *)title
+//    {
+//    if (![title isEqualToString:self.returnKeyTitle]) {
+//    UIButton *button = self.buttonDictionary[@(MMNumberKeyboardButtonDone)];
+//    if (button) {
+//    NSString *returnKeyTitle = (title != nil && title.length > 0) ? title : [self defaultReturnKeyTitle];
+//    [button setTitle:returnKeyTitle forState:UIControlStateNormal];
+//    }
+//    }
+//    }
+//
+//    - (NSString *)returnKeyTitle
+//    {
+//    UIButton *button = self.buttonDictionary[@(MMNumberKeyboardButtonDone)];
+//    if (button) {
+//    NSString *title = [button titleForState:UIControlStateNormal];
+//    if (title != nil && title.length > 0) {
+//    return title;
+//    }
+//    }
+//    return [self defaultReturnKeyTitle];
+//    }
+//
+//    - (NSString *)defaultReturnKeyTitle
+//    {
+//    return UIKitLocalizedString(@"Done");
+//    }
+//
+//    - (void)setReturnKeyButtonStyle:(MMNumberKeyboardButtonStyle)style
+//    {
+//    if (style != _returnKeyButtonStyle) {
+//    _returnKeyButtonStyle = style;
+//
+//    _MMNumberKeyboardButton *button = self.buttonDictionary[@(MMNumberKeyboardButtonDone)];
+//    if (button) {
+//    button.style = style;
+//    }
+//    }
+//    }
+
+//    - (id <UIKeyInput>)keyInput {
+//    id <UIKeyInput> keyInput = _keyInput;
+//    if (keyInput) {
+//    return keyInput;
+//    }
+//
+//    keyInput = [UIResponder MM_currentFirstResponder];
+//    if (![keyInput conformsToProtocol:@protocol(UITextInput)]) {
+//    NSLog(@"Warning: First responder %@ does not conform to the UIKeyInput protocol.", keyInput);
+//    return nil;
+//    }
+//
+//    _keyInput = keyInput;
+//
+//    return keyInput;
+//    }
+}

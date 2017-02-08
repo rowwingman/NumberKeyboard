@@ -1,0 +1,381 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D03C91C71E6312ED00162C50 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03C91C61E6312ED00162C50 /* AppDelegate.swift */; };
+		D03C91C91E6312ED00162C50 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03C91C81E6312ED00162C50 /* ViewController.swift */; };
+		D03C91CC1E6312ED00162C50 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D03C91CA1E6312ED00162C50 /* Main.storyboard */; };
+		D03C91D11E6312ED00162C50 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D03C91CF1E6312ED00162C50 /* LaunchScreen.storyboard */; };
+		D03C91F81E63136A00162C50 /* MMNumberKeyboardDeleteKey.png in Resources */ = {isa = PBXBuildFile; fileRef = D03C91EE1E63136A00162C50 /* MMNumberKeyboardDeleteKey.png */; };
+		D03C91F91E63136A00162C50 /* MMNumberKeyboardDeleteKey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D03C91EF1E63136A00162C50 /* MMNumberKeyboardDeleteKey@2x.png */; };
+		D03C91FA1E63136A00162C50 /* MMNumberKeyboardDeleteKey@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D03C91F01E63136A00162C50 /* MMNumberKeyboardDeleteKey@3x.png */; };
+		D03C91FB1E63136A00162C50 /* MMNumberKeyboardDismissKey.png in Resources */ = {isa = PBXBuildFile; fileRef = D03C91F11E63136A00162C50 /* MMNumberKeyboardDismissKey.png */; };
+		D03C91FC1E63136A00162C50 /* MMNumberKeyboardDismissKey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D03C91F21E63136A00162C50 /* MMNumberKeyboardDismissKey@2x.png */; };
+		D03C91FD1E63136A00162C50 /* MMNumberKeyboardDismissKey@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D03C91F31E63136A00162C50 /* MMNumberKeyboardDismissKey@3x.png */; };
+		D03C92061E6313E900162C50 /* MMNumberKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = D03C92011E6313E900162C50 /* MMNumberKeyboard.m */; };
+		D03C92071E6313E900162C50 /* NumberKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03C92021E6313E900162C50 /* NumberKeyboard.swift */; };
+		D03C92081E6313E900162C50 /* NumberKeyboardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03C92031E6313E900162C50 /* NumberKeyboardButton.swift */; };
+		D03C92091E6313E900162C50 /* NumberKeyboardDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03C92041E6313E900162C50 /* NumberKeyboardDelegate.swift */; };
+		D03C920A1E6313E900162C50 /* UIResponder+FirstResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03C92051E6313E900162C50 /* UIResponder+FirstResponder.swift */; };
+		D03C920E1E6314D800162C50 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D03C920D1E6314D800162C50 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		D03C91C31E6312ED00162C50 /* NumberKeyboardExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NumberKeyboardExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D03C91C61E6312ED00162C50 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D03C91C81E6312ED00162C50 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		D03C91CB1E6312ED00162C50 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		D03C91D01E6312ED00162C50 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		D03C91D21E6312ED00162C50 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D03C91EE1E63136A00162C50 /* MMNumberKeyboardDeleteKey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MMNumberKeyboardDeleteKey.png; sourceTree = "<group>"; };
+		D03C91EF1E63136A00162C50 /* MMNumberKeyboardDeleteKey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MMNumberKeyboardDeleteKey@2x.png"; sourceTree = "<group>"; };
+		D03C91F01E63136A00162C50 /* MMNumberKeyboardDeleteKey@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MMNumberKeyboardDeleteKey@3x.png"; sourceTree = "<group>"; };
+		D03C91F11E63136A00162C50 /* MMNumberKeyboardDismissKey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MMNumberKeyboardDismissKey.png; sourceTree = "<group>"; };
+		D03C91F21E63136A00162C50 /* MMNumberKeyboardDismissKey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MMNumberKeyboardDismissKey@2x.png"; sourceTree = "<group>"; };
+		D03C91F31E63136A00162C50 /* MMNumberKeyboardDismissKey@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MMNumberKeyboardDismissKey@3x.png"; sourceTree = "<group>"; };
+		D03C92001E6313E900162C50 /* MMNumberKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMNumberKeyboard.h; sourceTree = "<group>"; };
+		D03C92011E6313E900162C50 /* MMNumberKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMNumberKeyboard.m; sourceTree = "<group>"; };
+		D03C92021E6313E900162C50 /* NumberKeyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberKeyboard.swift; sourceTree = "<group>"; };
+		D03C92031E6313E900162C50 /* NumberKeyboardButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberKeyboardButton.swift; sourceTree = "<group>"; };
+		D03C92041E6313E900162C50 /* NumberKeyboardDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberKeyboardDelegate.swift; sourceTree = "<group>"; };
+		D03C92051E6313E900162C50 /* UIResponder+FirstResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIResponder+FirstResponder.swift"; sourceTree = "<group>"; };
+		D03C920D1E6314D800162C50 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D03C91C01E6312ED00162C50 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D03C91BA1E6312ED00162C50 = {
+			isa = PBXGroup;
+			children = (
+				D03C91C51E6312ED00162C50 /* NumberKeyboardExample */,
+				D03C91C41E6312ED00162C50 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D03C91C41E6312ED00162C50 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D03C91C31E6312ED00162C50 /* NumberKeyboardExample.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D03C91C51E6312ED00162C50 /* NumberKeyboardExample */ = {
+			isa = PBXGroup;
+			children = (
+				D03C91FE1E6313E900162C50 /* Classes */,
+				D03C91ED1E63136A00162C50 /* Images */,
+				D03C91C61E6312ED00162C50 /* AppDelegate.swift */,
+				D03C91C81E6312ED00162C50 /* ViewController.swift */,
+				D03C91CA1E6312ED00162C50 /* Main.storyboard */,
+				D03C91CF1E6312ED00162C50 /* LaunchScreen.storyboard */,
+				D03C91D21E6312ED00162C50 /* Info.plist */,
+				D03C920D1E6314D800162C50 /* Assets.xcassets */,
+			);
+			path = NumberKeyboardExample;
+			sourceTree = "<group>";
+		};
+		D03C91ED1E63136A00162C50 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				D03C91EE1E63136A00162C50 /* MMNumberKeyboardDeleteKey.png */,
+				D03C91EF1E63136A00162C50 /* MMNumberKeyboardDeleteKey@2x.png */,
+				D03C91F01E63136A00162C50 /* MMNumberKeyboardDeleteKey@3x.png */,
+				D03C91F11E63136A00162C50 /* MMNumberKeyboardDismissKey.png */,
+				D03C91F21E63136A00162C50 /* MMNumberKeyboardDismissKey@2x.png */,
+				D03C91F31E63136A00162C50 /* MMNumberKeyboardDismissKey@3x.png */,
+			);
+			name = Images;
+			path = ../../Images;
+			sourceTree = "<group>";
+		};
+		D03C91FE1E6313E900162C50 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				D03C91FF1E6313E900162C50 /* MMNumberKeyboard_classes */,
+				D03C92021E6313E900162C50 /* NumberKeyboard.swift */,
+				D03C92031E6313E900162C50 /* NumberKeyboardButton.swift */,
+				D03C92041E6313E900162C50 /* NumberKeyboardDelegate.swift */,
+				D03C92051E6313E900162C50 /* UIResponder+FirstResponder.swift */,
+			);
+			name = Classes;
+			path = ../../Classes;
+			sourceTree = "<group>";
+		};
+		D03C91FF1E6313E900162C50 /* MMNumberKeyboard_classes */ = {
+			isa = PBXGroup;
+			children = (
+				D03C92001E6313E900162C50 /* MMNumberKeyboard.h */,
+				D03C92011E6313E900162C50 /* MMNumberKeyboard.m */,
+			);
+			path = MMNumberKeyboard_classes;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D03C91C21E6312ED00162C50 /* NumberKeyboardExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D03C91D51E6312ED00162C50 /* Build configuration list for PBXNativeTarget "NumberKeyboardExample" */;
+			buildPhases = (
+				D03C91BF1E6312ED00162C50 /* Sources */,
+				D03C91C01E6312ED00162C50 /* Frameworks */,
+				D03C91C11E6312ED00162C50 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NumberKeyboardExample;
+			productName = NumberKeyboardExample;
+			productReference = D03C91C31E6312ED00162C50 /* NumberKeyboardExample.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D03C91BB1E6312ED00162C50 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0820;
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = "Maksym Prokopchuk";
+				TargetAttributes = {
+					D03C91C21E6312ED00162C50 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = Q9T2C5AP6B;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = D03C91BE1E6312ED00162C50 /* Build configuration list for PBXProject "NumberKeyboardExample" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D03C91BA1E6312ED00162C50;
+			productRefGroup = D03C91C41E6312ED00162C50 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D03C91C21E6312ED00162C50 /* NumberKeyboardExample */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D03C91C11E6312ED00162C50 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D03C91F81E63136A00162C50 /* MMNumberKeyboardDeleteKey.png in Resources */,
+				D03C91D11E6312ED00162C50 /* LaunchScreen.storyboard in Resources */,
+				D03C91FB1E63136A00162C50 /* MMNumberKeyboardDismissKey.png in Resources */,
+				D03C91F91E63136A00162C50 /* MMNumberKeyboardDeleteKey@2x.png in Resources */,
+				D03C91FC1E63136A00162C50 /* MMNumberKeyboardDismissKey@2x.png in Resources */,
+				D03C91FD1E63136A00162C50 /* MMNumberKeyboardDismissKey@3x.png in Resources */,
+				D03C91FA1E63136A00162C50 /* MMNumberKeyboardDeleteKey@3x.png in Resources */,
+				D03C920E1E6314D800162C50 /* Assets.xcassets in Resources */,
+				D03C91CC1E6312ED00162C50 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D03C91BF1E6312ED00162C50 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D03C92061E6313E900162C50 /* MMNumberKeyboard.m in Sources */,
+				D03C92071E6313E900162C50 /* NumberKeyboard.swift in Sources */,
+				D03C92091E6313E900162C50 /* NumberKeyboardDelegate.swift in Sources */,
+				D03C91C91E6312ED00162C50 /* ViewController.swift in Sources */,
+				D03C91C71E6312ED00162C50 /* AppDelegate.swift in Sources */,
+				D03C920A1E6313E900162C50 /* UIResponder+FirstResponder.swift in Sources */,
+				D03C92081E6313E900162C50 /* NumberKeyboardButton.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		D03C91CA1E6312ED00162C50 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D03C91CB1E6312ED00162C50 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		D03C91CF1E6312ED00162C50 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D03C91D01E6312ED00162C50 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D03C91D31E6312ED00162C50 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		D03C91D41E6312ED00162C50 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D03C91D61E6312ED00162C50 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = Q9T2C5AP6B;
+				INFOPLIST_FILE = NumberKeyboardExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.owox.NumberKeyboardExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		D03C91D71E6312ED00162C50 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = Q9T2C5AP6B;
+				INFOPLIST_FILE = NumberKeyboardExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.owox.NumberKeyboardExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D03C91BE1E6312ED00162C50 /* Build configuration list for PBXProject "NumberKeyboardExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D03C91D31E6312ED00162C50 /* Debug */,
+				D03C91D41E6312ED00162C50 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D03C91D51E6312ED00162C50 /* Build configuration list for PBXNativeTarget "NumberKeyboardExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D03C91D61E6312ED00162C50 /* Debug */,
+				D03C91D71E6312ED00162C50 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D03C91BB1E6312ED00162C50 /* Project object */;
+}

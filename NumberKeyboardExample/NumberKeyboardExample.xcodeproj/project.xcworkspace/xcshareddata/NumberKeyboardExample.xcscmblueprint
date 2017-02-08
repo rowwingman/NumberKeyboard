@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "5066819F44CECCCFE0E30B3BA4D1C0E11AF0982D",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "16A8453E497B429BAD54DE3925C45CC622B58772" : 9223372036854775807,
+    "5066819F44CECCCFE0E30B3BA4D1C0E11AF0982D" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "F81914D8-311C-4916-94CC-66509F3743D0",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "16A8453E497B429BAD54DE3925C45CC622B58772" : "MMNumberKeyboard\/",
+    "5066819F44CECCCFE0E30B3BA4D1C0E11AF0982D" : "NumberKeyboard\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "NumberKeyboardExample",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "NumberKeyboardExample\/NumberKeyboardExample.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/marko1503\/MMNumberKeyboard.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "16A8453E497B429BAD54DE3925C45CC622B58772"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/marko1503\/NumberKeyboard.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "5066819F44CECCCFE0E30B3BA4D1C0E11AF0982D"
+    }
+  ]
+}
