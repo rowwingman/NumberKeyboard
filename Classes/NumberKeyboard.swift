@@ -31,11 +31,26 @@ import UIKit
     /// Delegate to change text insertion or return key behavior.
     weak var delegate: NumberKeyboardDelegate?
 
+    fileprivate var _allowsDecimalPoint = false {
+        didSet {
+            // configurate zero number
+            self.setNeedsLayout()
+        }
+    }
+
     /**
-     If YES, the decimal separator key will be displayed.
-     - note: The default value of this property is **NO**.
+     If true, the decimal separator key will be displayed.
+     - note: The default value of this property is **false**.
      */
-    var allowsDecimalPoint = false
+    var allowsDecimalPoint: Bool {
+        get {
+            return _allowsDecimalPoint
+        }
+        set {
+            guard _allowsDecimalPoint != newValue else { return }
+            _allowsDecimalPoint = newValue
+        }
+    }
 
     // UIKitLocalizedString(@"Done");
     /**
@@ -486,7 +501,7 @@ import UIKit
                 rect.origin.x = CGFloat(columnIndex + 1) * columnWidth
                 rect.size.width = separatorDimension
 
-                if columnIndex == 1, !allowsDecimalPoint {
+                if columnIndex == 1, !self.allowsDecimalPoint {
                     rect.size.height = contentRect.height - rowHeight
                 }
                 else {
@@ -512,15 +527,7 @@ import UIKit
         return newSize
     }
 
-//    - (void)setAllowsDecimalPoint:(BOOL)allowsDecimalPoint
-//    {
-//    if (allowsDecimalPoint != _allowsDecimalPoint) {
-//    _allowsDecimalPoint = allowsDecimalPoint;
-//
-//    [self setNeedsLayout];
-//    }
-//    }
-//
+
 //    - (void)setReturnKeyTitle:(NSString *)title
 //    {
 //    if (![title isEqualToString:self.returnKeyTitle]) {
