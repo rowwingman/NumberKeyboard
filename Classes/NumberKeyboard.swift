@@ -18,11 +18,11 @@ import UIKit
     var enableInputClicksWhenVisible: Bool = true
 
     // MARK: - Constants
-    let keyboardRows                = 4
-    let keyboardColumns             = 4
-    let rowHeight: CGFloat          = 55.0
-    let keyboardPadBorder: CGFloat  = 7.0
-    let keyboardPadSpacing: CGFloat = 8.0
+    fileprivate let keyboardRows                = 4
+    fileprivate let keyboardColumns             = 4
+    fileprivate let rowHeight: CGFloat          = 55.0
+    fileprivate let keyboardPadBorder: CGFloat  = 7.0
+    fileprivate let keyboardPadSpacing: CGFloat = 8.0
 
     // MARK: - Public Properties
     /// The receiver key input object. If nil the object at top of the responder chain is used.
@@ -53,11 +53,25 @@ import UIKit
     }
 
     // UIKitLocalizedString(@"Done");
+    fileprivate lazy var _returnKeyTitle: String = "Done"
+
     /**
      The visible title of the Return key.
      - note: The default visible title of the Return key is "**Done**".
      */
-    lazy var returnKeyTitle: String = "Done"
+    var returnKeyTitle: String {
+        get {
+            return _returnKeyTitle
+        }
+        set {
+            guard _returnKeyTitle != newValue else { return }
+            _returnKeyTitle = newValue
+
+            guard let button = self.buttons[NumberKeyboardButtonType.done.rawValue] else { return }
+            button.setTitle(_returnKeyTitle, for: .normal)
+        }
+    }
+
 
     /**
      The button style of the Return key.
@@ -101,7 +115,7 @@ import UIKit
         buttons[NumberKeyboardButtonType.special.rawValue] = specialButton
 
 
-        let doneButton = NumberKeyboardButton(doneKeyTitle: "Done", font: doneButtonFont, target: self, action: #selector(p_tapDoneKey(button:)))
+        let doneButton = NumberKeyboardButton(doneKeyTitle: self.returnKeyTitle, font: doneButtonFont, target: self, action: #selector(p_tapDoneKey(button:)))
         buttons[NumberKeyboardButtonType.done.rawValue] = doneButton
 
 //        NSLocale *locale = self.locale ?: [NSLocale currentLocale];
@@ -192,12 +206,6 @@ import UIKit
         let dismissImage = NumberKeyboard.p_keyboardImageNamed("MMNumberKeyboardDismissKey")?.withRenderingMode(.alwaysTemplate)
         self.configureSpecialKey(image: dismissImage, target: self, action: #selector(p_dismissKeyboard))
 
-        // Add default return key title.
-//        [self setReturnKeyTitle:[self defaultReturnKeyTitle]];
-//        
-        // Add default return key style.
-//        [self setReturnKeyButtonStyle:MMNumberKeyboardButtonStyleDone];
-//        
         // Size to fit.
         self.sizeToFit()
     }
@@ -526,47 +534,6 @@ import UIKit
 
         return newSize
     }
-
-
-//    - (void)setReturnKeyTitle:(NSString *)title
-//    {
-//    if (![title isEqualToString:self.returnKeyTitle]) {
-//    UIButton *button = self.buttonDictionary[@(MMNumberKeyboardButtonDone)];
-//    if (button) {
-//    NSString *returnKeyTitle = (title != nil && title.length > 0) ? title : [self defaultReturnKeyTitle];
-//    [button setTitle:returnKeyTitle forState:UIControlStateNormal];
-//    }
-//    }
-//    }
-//
-//    - (NSString *)returnKeyTitle
-//    {
-//    UIButton *button = self.buttonDictionary[@(MMNumberKeyboardButtonDone)];
-//    if (button) {
-//    NSString *title = [button titleForState:UIControlStateNormal];
-//    if (title != nil && title.length > 0) {
-//    return title;
-//    }
-//    }
-//    return [self defaultReturnKeyTitle];
-//    }
-//
-//    - (NSString *)defaultReturnKeyTitle
-//    {
-//    return UIKitLocalizedString(@"Done");
-//    }
-//
-//    - (void)setReturnKeyButtonStyle:(MMNumberKeyboardButtonStyle)style
-//    {
-//    if (style != _returnKeyButtonStyle) {
-//    _returnKeyButtonStyle = style;
-//
-//    _MMNumberKeyboardButton *button = self.buttonDictionary[@(MMNumberKeyboardButtonDone)];
-//    if (button) {
-//    button.style = style;
-//    }
-//    }
-//    }
 
 //    - (id <UIKeyInput>)keyInput {
 //    id <UIKeyInput> keyInput = _keyInput;
