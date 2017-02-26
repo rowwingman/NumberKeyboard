@@ -259,25 +259,26 @@ import UIKit
     }
 
 
-    // MARK: - 
+    // MARK: - Handle pan gesture
     func p_handleHighlight(gestureRecognizer : UIPanGestureRecognizer) {
-//        CGPoint point = [gestureRecognizer locationInView:self];
-//
-//        if (gestureRecognizer.state == UIGestureRecognizerStateChanged || gestureRecognizer.state == UIGestureRecognizerStateEnded) {
-//            for (UIButton *button in self.buttonDictionary.objectEnumerator) {
-//                BOOL points = CGRectContainsPoint(button.frame, point) && !button.isHidden;
-//
-//                if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
-//                    [button setHighlighted:points];
-//                } else {
-//                    [button setHighlighted:NO];
-//                }
-//
-//                if (gestureRecognizer.state == UIGestureRecognizerStateEnded && points) {
-//                    [button sendActionsForControlEvents:UIControlEventTouchUpInside];
-//                }
-//            }
-//        }
+        let point = gestureRecognizer.location(in: self)
+
+        guard gestureRecognizer.state == .changed || gestureRecognizer.state == .ended else { return }
+
+        for (_, button) in self.buttons {
+            let points = button.frame.contains(point) && !button.isHidden
+
+            if gestureRecognizer.state == .changed {
+                button.isHighlighted = points
+            }
+            else {
+                button.isHighlighted = false
+            }
+
+            if gestureRecognizer.state == .ended && points {
+                button.sendActions(for: .touchUpInside)
+            }
+        }
     }
 
     // MARK: - Handle Actions
@@ -372,13 +373,13 @@ import UIKit
 
     // MARK: - Layout
     @inline(__always) func p_(rect: CGRect, contentOrigin: CGPoint, interfaceIdiom: UIUserInterfaceIdiom) -> CGRect {
-        let newRect = rect.offsetBy(dx: contentOrigin.x, dy: contentOrigin.y)
+        var newRect = rect.offsetBy(dx: contentOrigin.x, dy: contentOrigin.y)
 
-//        if (interfaceIdiom == UIUserInterfaceIdiomPad) {
-//            CGFloat inset = MMNumberKeyboardPadSpacing / 2.0f;
-//            rect = CGRectInset(rect, inset, inset);
-//        }
-        
+        if interfaceIdiom == .pad {
+            let inset : CGFloat = self.keyboardPadSpacing / 2.0
+            newRect = newRect.insetBy(dx: inset, dy: inset)
+        }
+
         return newRect
     }
 
@@ -389,7 +390,7 @@ import UIKit
 
         let bounds = self.bounds
 
-//        // Settings.
+        // Settings.
         let interfaceIdiom = UI_USER_INTERFACE_IDIOM()
         let spacing : CGFloat = (interfaceIdiom == .pad) ? self.keyboardPadBorder : 0.0
         let maximumWidth : CGFloat = (interfaceIdiom == .pad) ? 400.0 : bounds.width
