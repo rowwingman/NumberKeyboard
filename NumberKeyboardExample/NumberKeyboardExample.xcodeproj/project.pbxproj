@@ -23,6 +23,7 @@
 		D03C92091E6313E900162C50 /* NumberKeyboardDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03C92041E6313E900162C50 /* NumberKeyboardDelegate.swift */; };
 		D03C920A1E6313E900162C50 /* UIResponder+FirstResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03C92051E6313E900162C50 /* UIResponder+FirstResponder.swift */; };
 		D03C920E1E6314D800162C50 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D03C920D1E6314D800162C50 /* Assets.xcassets */; };
+		D08E56D61E631C3E004676BD /* NumberKeyboardButton+Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08E56D51E631C3E004676BD /* NumberKeyboardButton+Styles.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 		D03C92041E6313E900162C50 /* NumberKeyboardDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberKeyboardDelegate.swift; sourceTree = "<group>"; };
 		D03C92051E6313E900162C50 /* UIResponder+FirstResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIResponder+FirstResponder.swift"; sourceTree = "<group>"; };
 		D03C920D1E6314D800162C50 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D08E56D51E631C3E004676BD /* NumberKeyboardButton+Styles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NumberKeyboardButton+Styles.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,9 +109,10 @@
 			isa = PBXGroup;
 			children = (
 				D03C91FF1E6313E900162C50 /* MMNumberKeyboard_classes */,
+				D03C92041E6313E900162C50 /* NumberKeyboardDelegate.swift */,
 				D03C92021E6313E900162C50 /* NumberKeyboard.swift */,
 				D03C92031E6313E900162C50 /* NumberKeyboardButton.swift */,
-				D03C92041E6313E900162C50 /* NumberKeyboardDelegate.swift */,
+				D08E56D51E631C3E004676BD /* NumberKeyboardButton+Styles.swift */,
 				D03C92051E6313E900162C50 /* UIResponder+FirstResponder.swift */,
 			);
 			name = Classes;
@@ -207,6 +210,7 @@
 				D03C92061E6313E900162C50 /* MMNumberKeyboard.m in Sources */,
 				D03C92071E6313E900162C50 /* NumberKeyboard.swift in Sources */,
 				D03C92091E6313E900162C50 /* NumberKeyboardDelegate.swift in Sources */,
+				D08E56D61E631C3E004676BD /* NumberKeyboardButton+Styles.swift in Sources */,
 				D03C91C91E6312ED00162C50 /* ViewController.swift in Sources */,
 				D03C91C71E6312ED00162C50 /* AppDelegate.swift in Sources */,
 				D03C920A1E6313E900162C50 /* UIResponder+FirstResponder.swift in Sources */,
@@ -374,6 +378,7 @@
 				D03C91D71E6312ED00162C50 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

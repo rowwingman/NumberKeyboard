@@ -18,13 +18,10 @@ import UIKit
     var enableInputClicksWhenVisible: Bool = true
 
     // MARK: - Constants
-//    MMNumberKeyboardRows
-    let keyboardRows       = 4
-//    MMNumberKeyboardRowHeight
+    let keyboardRows                = 4
+    let keyboardColumns             = 4
     let rowHeight: CGFloat          = 55.0
-//    MMNumberKeyboardPadBorder
     let keyboardPadBorder: CGFloat  = 7.0
-//    MMNumberKeyboardPadSpacing
     let keyboardPadSpacing: CGFloat = 8.0
 
     // MARK: - Public Properties
@@ -57,28 +54,68 @@ import UIKit
     // MARK: - Private Properties
     lazy fileprivate(set) var locale = Locale.current
 
-    fileprivate var buttons : [Int: UIButton]!
+    fileprivate lazy var buttons : [Int: UIButton] = {
+        var buttonFont : UIFont
+        var doneButtonFont : UIFont
+        if #available(iOS 8.2, *) {
+            buttonFont = UIFont.systemFont(ofSize: 28.0, weight: UIFontWeightLight)
+            doneButtonFont = UIFont.systemFont(ofSize: 17.0)
+        }
+        else {
+            buttonFont = UIFont(name: "HelveticaNeue-Light", size: 28.0)!
+            doneButtonFont = UIFont(name: "HelveticaNeue", size: 17.0)!
+        }
+
+        var buttons = [Int: UIButton]()
+
+        let numberMin = NumberKeyboardButtonType.numberMin.rawValue
+        let numberMax = NumberKeyboardButtonType.numberMax.rawValue
+        for key in numberMin...numberMax {
+            let button = NumberKeyboardButton(numberKey: String(key), font: buttonFont, target: self, action: #selector(p_tapKeyNumber(button:)))
+            buttons[key] = button
+        }
+
+        let backspaceImage = NumberKeyboard.p_keyboardImageNamed("MMNumberKeyboardDeleteKey")?.withRenderingMode(.alwaysTemplate)
+
+        let backspaceButton = NumberKeyboardButton(backspaceImage: backspaceImage, target: self, action: #selector(p_tapBackspaceKey(button:)))
+        backspaceButton.addTarget(self, action: #selector(p_tapBackspaceRepeat(button:)), forContinuousPress: 0.15)
+        buttons[NumberKeyboardButtonType.backspace.rawValue] = backspaceButton
+
+        let specialButton = NumberKeyboardButton(style: .gray)
+        specialButton.addTarget(self, action: #selector(p_tapSpecialKey(button:)), for: .touchUpInside)
+        buttons[NumberKeyboardButtonType.special.rawValue] = specialButton
+
+
+        let doneButton = NumberKeyboardButton(doneKeyTitle: "Done", font: doneButtonFont, target: self, action: #selector(p_tapDoneKey(button:)))
+        buttons[NumberKeyboardButtonType.done.rawValue] = doneButton
+
+//        NSLocale *locale = self.locale ?: [NSLocale currentLocale];
+//        let decimalSeparator = [self.locale objectForKey:NSLocaleDecimalSeparator];
+        let decimalPointButton = NumberKeyboardButton(decimalPoint: ".", font: buttonFont, target: self, action: #selector(p_tapDecimalPointKey(button:)))
+        buttons[NumberKeyboardButtonType.decimalPoint.rawValue] = decimalPointButton
+
+        for (_, button) in buttons {
+            button.isExclusiveTouch = true
+            button.addTarget(self, action: #selector(p_playClick(button:)), for: .touchDown)
+        }
+
+        return buttons
+    }()
 
     /// Initialize an array for the separators.
-    fileprivate lazy var separatorViews = [UIView]()
-//    fileprivate lazy var separatorViews : [UIView] = {
-//        var separatorViews = [UIView]()
-//        let numbersPerLine = 3
-//        let totalColumns = 4
-//        let totalRows = numbersPerLine + 1
-//        let numberOfSeparators = totalColumns + totalRows - 1
-//        var separatorsToInsert = numberOfSeparators
-//
-//        while separatorsToInsert > 0 {
-//            let separator = UIView(frame: CGRect.zero)
-//            separator.backgroundColor = UIColor(white: 0.0, alpha: 0.1)
-//            self.addSubview(separator)
-//            separatorViews.append(separator)
-//            separatorsToInsert -= 1
-//        }
-//
-//        return separatorViews
-//    }()
+    fileprivate lazy var separatorViews : [UIView] = {
+        var separatorViews = [UIView]()
+        var numberOfSeparators = self.keyboardColumns + self.keyboardRows - 1
+
+        for index in 0..<numberOfSeparators {
+            print("index: \(index)")
+            let separator = UIView(frame: CGRect.zero)
+            separator.backgroundColor = UIColor(white: 0.0, alpha: 0.1)
+            separatorViews.append(separator)
+        }
+
+        return separatorViews
+    }()
 
     // MARK: - Initializers
     required init?(coder aDecoder: NSCoder) {
@@ -123,70 +160,18 @@ import UIKit
 
     func p_initialSetup() {
 
-        var buttonFont : UIFont
-        var doneButtonFont : UIFont
-        if #available(iOS 8.2, *) {
-            buttonFont = UIFont.systemFont(ofSize: 28.0, weight: UIFontWeightLight)
-            doneButtonFont = UIFont.systemFont(ofSize: 17.0)
-        }
-        else {
-            buttonFont = UIFont(name: "HelveticaNeue-Light", size: 28.0)!
-            doneButtonFont = UIFont(name: "HelveticaNeue", size: 17.0)!
-        }
-
-        var buttons = [Int: UIButton]()
-
-        let numberMin = NumberKeyboardButtonType.numberMin.rawValue
-        let numberMax = NumberKeyboardButtonType.numberMax.rawValue
-        for key in numberMin...numberMax {
-            let button = NumberKeyboardButton(style: .white)
-
-            let title = String(key)
-            button.setTitle(title, for: .normal)
-            button.titleLabel?.font = buttonFont
-            button.addTarget(self, action: #selector(p_tapKeyNumber(button:)), for: .touchUpInside)
-
-            buttons[key] = button
-        }
-
-        let backspaceImage = NumberKeyboard.p_keyboardImageNamed("MMNumberKeyboardDeleteKey")?.withRenderingMode(.alwaysTemplate)
-
-        let backspaceButton = NumberKeyboardButton(style: .gray)
-        backspaceButton.addTarget(self, action: #selector(p_tapBackspaceKey(button:)), for: .touchUpInside)
-        backspaceButton.addTarget(self, action: #selector(p_tapBackspaceRepeat(button:)), forContinuousPress: 0.15)
-        backspaceButton.setImage(backspaceImage, for: .normal)
-        buttons[NumberKeyboardButtonType.backspace.rawValue] = backspaceButton
-
-
-        let specialButton = NumberKeyboardButton(style: .gray)
-        specialButton.addTarget(self, action: #selector(p_tapSpecialKey(button:)), for: .touchUpInside)
-        buttons[NumberKeyboardButtonType.special.rawValue] = specialButton
-
-
-        let doneButton = NumberKeyboardButton(style: .done)
-        doneButton.addTarget(self, action: #selector(p_tapDoneKey(button:)), for: .touchUpInside)
-        doneButton.titleLabel?.font = doneButtonFont
-        doneButton.setTitle("Done", for: .normal)
-        buttons[NumberKeyboardButtonType.done.rawValue] = doneButton
-
-        let decimalPointButton = NumberKeyboardButton(style: .white)
-        decimalPointButton.addTarget(self, action: #selector(p_tapDecimalPointKey(button:)), for: .touchUpInside)
-//        NSLocale *locale = self.locale ?: [NSLocale currentLocale];
-//        let decimalSeparator = [self.locale objectForKey:NSLocaleDecimalSeparator];
-
-        decimalPointButton.setTitle(".", for: .normal)
-        buttons[NumberKeyboardButtonType.decimalPoint.rawValue] = decimalPointButton
-
-        for (_, button) in buttons {
-            button.isExclusiveTouch = true
-            button.addTarget(self, action: #selector(p_playClick(button:)), for: .touchDown)
+        for (_, button) in self.buttons {
             self.addSubview(button)
         }
 
-//        let highlightGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(_handleHighlightGestureRecognizer:))
-//        self.addGestureRecognizer(highlightGestureRecognizer)
+        if UI_USER_INTERFACE_IDIOM() == .phone {
+            for separatorView in self.separatorViews {
+                self.addSubview(separatorView)
+            }
+        }
 
-        self.buttons = buttons;
+        let highlightGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(p_handleHighlight(gestureRecognizer:)))
+        self.addGestureRecognizer(highlightGestureRecognizer)
 
 //        // Add default action.
         let dismissImage = NumberKeyboard.p_keyboardImageNamed("MMNumberKeyboardDismissKey")?.withRenderingMode(.alwaysTemplate)
@@ -377,11 +362,8 @@ import UIKit
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        guard let buttons = self.buttons else { return }
+        let buttons = self.buttons
 
-//        CGRect bounds = (CGRect){
-//            .size = self.bounds.size
-//        };
         let bounds = self.bounds
 
 //        // Settings.
@@ -469,70 +451,50 @@ import UIKit
 
         // Layout separators if phone.
         if interfaceIdiom == .phone {
-            var separatorViews = self.separatorViews
+            self.p_layoutSeparators(separators: self.separatorViews, contentRect: contentRect, columnWidth: columnWidth)
+        }
+    }
 
-            let totalColumns = 4
-            let totalRows = numbersPerLine + 1
-            let numberOfSeparators = totalColumns + totalRows - 1
+    func p_layoutSeparators(separators: [UIView], contentRect: CGRect, columnWidth: CGFloat) {
+        var scale : CGFloat = 1.0
+        if let window = self.window {
+            scale = window.screen.scale
+        }
+        let separatorDimension : CGFloat = 1.0 / scale
 
-            if separatorViews.count != numberOfSeparators {
-                let delta = numberOfSeparators - separatorViews.count
-                let removes = separatorViews.count > numberOfSeparators
-                if removes {
-//                    NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, delta)];
-//                    [[separatorViews objectsAtIndexes:indexes] makeObjectsPerformSelector:@selector(removeFromSuperview)];
-//                    [separatorViews removeObjectsAtIndexes:indexes];
+        let totalRows = self.keyboardRows
+
+        for (index, separator) in separators.enumerated() {
+            var rect = CGRect.zero
+
+            if index < totalRows {
+                rect.origin.y = CGFloat(index) * rowHeight
+
+                if index % 2 == 1 {
+                    // to not cross backspace and done buttons
+                    rect.size.width = contentRect.width - CGFloat(columnWidth)
                 }
                 else {
-                    var separatorsToInsert = delta;
-                    while separatorsToInsert > 0 {
-                        let separator = UIView(frame: CGRect.zero)
-                        separator.backgroundColor = UIColor(white: 0.0, alpha: 0.1)
-                        self.addSubview(separator)
-                        separatorViews.append(separator)
-                        separatorsToInsert -= 1
-                    }
+                    rect.size.width = contentRect.width
                 }
+
+                rect.size.height = separatorDimension
             }
+            else {
+                let columnIndex = index - totalRows
 
-            var scale : CGFloat = 1.0
-            if let window = self.window {
-                scale = window.screen.scale
-            }
+                rect.origin.x = CGFloat(columnIndex + 1) * columnWidth
+                rect.size.width = separatorDimension
 
-            let separatorDimension : CGFloat = 1.0 / scale
-
-            for (index, separator) in separatorViews.enumerated() {
-                var rect = CGRect.zero
-
-                if index < totalRows {
-                    rect.origin.y = CGFloat(index) * rowHeight
-
-                    if index % 2 == 1 {
-                        rect.size.width = contentRect.width - CGFloat(columnWidth)
-                    }
-                    else {
-                        rect.size.width = contentRect.width
-                    }
-
-                    rect.size.height = separatorDimension
+                if columnIndex == 1, !allowsDecimalPoint {
+                    rect.size.height = contentRect.height - rowHeight
                 }
                 else {
-                    let col = index - totalRows
-
-                    rect.origin.x = CGFloat(col + 1) * columnWidth
-                    rect.size.width = separatorDimension
-
-                    if col == 1, !allowsDecimalPoint {
-                        rect.size.height = contentRect.height - rowHeight
-                    }
-                    else {
-                        rect.size.height = contentRect.height
-                    }
+                    rect.size.height = contentRect.height
                 }
-
-                separator.frame = self.p_(rect: rect, contentOrigin: contentRect.origin, interfaceIdiom: interfaceIdiom)
             }
+
+            separator.frame = self.p_(rect: rect, contentOrigin: contentRect.origin, interfaceIdiom: .phone)
         }
     }
 

@@ -30,7 +30,6 @@ enum NumberKeyboardButtonType : Int {
     case done
     case special
     case decimalPoint
-    case none
 }
 
 
