@@ -43,6 +43,27 @@ import UIKit
      If true, the decimal separator key will be displayed.
      - note: The default value of this property is **false**.
      */
+    var allowsSpecialKey: Bool {
+        get {
+            return _allowsSpecialKey
+        }
+        set {
+            guard _allowsSpecialKey != newValue else { return }
+            _allowsSpecialKey = newValue
+        }
+    }
+
+    private var _allowsSpecialKey = false {
+        didSet {
+            // configurate zero number
+            self.setNeedsLayout()
+        }
+    }
+
+    /**
+     If true, the decimal separator key will be displayed.
+     - note: The default value of this property is **false**.
+     */
     var allowsDecimalPoint: Bool {
         get {
             return _allowsDecimalPoint
@@ -413,12 +434,16 @@ import UIKit
             var rect = CGRect(origin: CGPoint.zero, size: numberSize)
 
             if digit == 0 {
-                rect.origin.y = numberSize.height * 3;
-                rect.origin.x = numberSize.width;
+                rect.origin.y = numberSize.height * 3
+                rect.origin.x = numberSize.width
 
                 if !allowsDecimalPoint {
-                    rect.size.width = numberSize.width * 2.0;
+                    rect.size.width += numberSize.width
 //                    button?.contentEdgeInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: numberSize.width)
+                }
+                if !allowsSpecialKey {
+                    rect.origin.x = 0.0
+                    rect.size.width += numberSize.width
                 }
             }
             else {
@@ -435,12 +460,12 @@ import UIKit
         }
 
         // Layout special key.
-
         if let specialKey = buttons[NumberKeyboardButtonType.special.rawValue] {
             var rect = CGRect(origin: CGPoint.zero, size: numberSize)
             rect.origin.y = numberSize.height * 3
 
             specialKey.frame = self.p_(rect: rect, contentOrigin: contentRect.origin, interfaceIdiom: interfaceIdiom)
+            specialKey.isHidden = !allowsSpecialKey
         }
 
         // Layout decimal point.
@@ -503,6 +528,9 @@ import UIKit
                 rect.size.width = separatorDimension
 
                 if columnIndex == 1, !self.allowsDecimalPoint {
+                    rect.size.height = contentRect.height - rowHeight
+                }
+                else if columnIndex == 0, !self.allowsSpecialKey {
                     rect.size.height = contentRect.height - rowHeight
                 }
                 else {
