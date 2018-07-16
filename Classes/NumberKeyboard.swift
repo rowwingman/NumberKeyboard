@@ -85,16 +85,8 @@ import UIKit
     lazy private(set) var locale = Locale.current
 
     private lazy var buttons : [Int: UIButton] = {
-        var buttonFont : UIFont
-        var doneButtonFont : UIFont
-        if #available(iOS 8.2, *) {
-            buttonFont = UIFont.systemFont(ofSize: 28.0, weight: UIFont.Weight.light)
-            doneButtonFont = UIFont.systemFont(ofSize: 17.0)
-        }
-        else {
-            buttonFont = UIFont(name: "HelveticaNeue-Light", size: 28.0)!
-            doneButtonFont = UIFont(name: "HelveticaNeue", size: 17.0)!
-        }
+        let buttonFont = UIFont.systemFont(ofSize: 28.0, weight: UIFont.Weight.light)
+        let doneButtonFont = UIFont.systemFont(ofSize: 17.0)
 
         var buttons = [Int: UIButton]()
 
@@ -138,7 +130,6 @@ import UIKit
         var numberOfSeparators = self.keyboardColumns + self.keyboardRows - 1
 
         for index in 0..<numberOfSeparators {
-            print("index: \(index)")
             let separator = UIView(frame: CGRect.zero)
             separator.backgroundColor = UIColor(white: 0.0, alpha: 0.1)
             separatorViews.append(separator)
@@ -427,7 +418,7 @@ import UIKit
 
                 if !allowsDecimalPoint {
                     rect.size.width = numberSize.width * 2.0;
-                    button?.contentEdgeInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: numberSize.width)
+//                    button?.contentEdgeInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: numberSize.width)
                 }
             }
             else {

@@ -116,7 +116,6 @@ enum NumberKeyboardButtonType : Int {
         self.setTitleColor(color, for: .normal)
         self.setTitleColor(highlightedColor, for: .selected)
         self.setTitleColor(highlightedColor, for: .highlighted)
-
 //        if (interfaceIdiom == UIUserInterfaceIdiomPad) {
 //            CALayer *buttonLayer = [self layer];
 //            buttonLayer.cornerRadius = 4.0f;

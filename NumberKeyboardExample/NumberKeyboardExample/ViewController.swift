@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let keyboard = NumberKeyboard(frame: CGRect.zero)
-        keyboard.allowsDecimalPoint = true
+//        keyboard.allowsDecimalPoint = true
         keyboard.delegate = self
 
         self.textField.inputView = keyboard
