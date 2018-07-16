@@ -19,11 +19,11 @@ import UIKit
     var enableInputClicksWhenVisible: Bool = true
 
     // MARK: - Constants
-    fileprivate let keyboardRows                = 4
-    fileprivate let keyboardColumns             = 4
-    fileprivate let rowHeight: CGFloat          = 55.0
-    fileprivate let keyboardPadBorder: CGFloat  = 7.0
-    fileprivate let keyboardPadSpacing: CGFloat = 8.0
+    private let keyboardRows                = 4
+    private let keyboardColumns             = 4
+    private let rowHeight: CGFloat          = 55.0
+    private let keyboardPadBorder: CGFloat  = 7.0
+    private let keyboardPadSpacing: CGFloat = 8.0
 
     // MARK: - Public Properties
     /// The receiver key input object. If nil the object at top of the responder chain is used.
@@ -32,7 +32,7 @@ import UIKit
     /// Delegate to change text insertion or return key behavior.
     weak var delegate: NumberKeyboardDelegate?
 
-    fileprivate var _allowsDecimalPoint = false {
+    private var _allowsDecimalPoint = false {
         didSet {
             // configurate zero number
             self.setNeedsLayout()
@@ -54,7 +54,7 @@ import UIKit
     }
 
     // UIKitLocalizedString(@"Done");
-    fileprivate lazy var _returnKeyTitle: String = "Done"
+    private lazy var _returnKeyTitle: String = "Done"
 
     /**
      The visible title of the Return key.
@@ -82,9 +82,9 @@ import UIKit
 
 
     // MARK: - Private Properties
-    lazy fileprivate(set) var locale = Locale.current
+    lazy private(set) var locale = Locale.current
 
-    fileprivate lazy var buttons : [Int: UIButton] = {
+    private lazy var buttons : [Int: UIButton] = {
         var buttonFont : UIFont
         var doneButtonFont : UIFont
         if #available(iOS 8.2, *) {
@@ -133,7 +133,7 @@ import UIKit
     }()
 
     /// Initialize an array for the separators.
-    fileprivate lazy var separatorViews : [UIView] = {
+    private lazy var separatorViews : [UIView] = {
         var separatorViews = [UIView]()
         var numberOfSeparators = self.keyboardColumns + self.keyboardRows - 1
 
@@ -173,7 +173,7 @@ import UIKit
     }
 
     // MARK: - Accessing keyboard images.
-    fileprivate class func p_keyboardImageNamed(_ imageName: String) -> UIImage? {
+    private class func p_keyboardImageNamed(_ imageName: String) -> UIImage? {
         let imageExtension = "png"
 
         var image : UIImage?

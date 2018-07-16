@@ -42,14 +42,14 @@ enum NumberKeyboardButtonType : Int {
 
     // MARK: - Public Properties
     /// The style of the keyboard button.
-    fileprivate(set) var style : NumberKeyboardButtonStyle = .white
+    private(set) var style : NumberKeyboardButtonStyle = .white
 
     // MARK: - Private Properties
-    fileprivate(set) var continuousPressTimer : Timer?
+    private(set) var continuousPressTimer : Timer?
 
-    fileprivate(set) var continuousPressTimeInterval : TimeInterval?
+    private(set) var continuousPressTimeInterval : TimeInterval?
 
-    fileprivate(set) lazy var fillColor : UIColor = {
+    private(set) lazy var fillColor : UIColor = {
         var fillColor : UIColor
 
         switch self.style {
@@ -69,7 +69,7 @@ enum NumberKeyboardButtonType : Int {
         return fillColor
     }()
 
-    fileprivate(set) lazy var highlightedFillColor : UIColor = {
+    private(set) lazy var highlightedFillColor : UIColor = {
         var highlightedFillColor : UIColor
 
         switch self.style {
@@ -84,12 +84,12 @@ enum NumberKeyboardButtonType : Int {
         return highlightedFillColor
     }()
 
-    fileprivate(set) lazy var controlColor : UIColor = {
+    private(set) lazy var controlColor : UIColor = {
         let controlColor : UIColor = self.style == .done ? UIColor.white : UIColor.black
         return controlColor
     }()
 
-    fileprivate(set) lazy var highlightedControlColor : UIColor = UIColor.black
+    private(set) lazy var highlightedControlColor : UIColor = UIColor.black
 
     // MARK: - Super Properties
     override var isHighlighted: Bool {
