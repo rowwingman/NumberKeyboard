@@ -184,7 +184,7 @@ enum NumberKeyboardButtonType : Int {
         self.continuousPressTimer = Timer(timeInterval: continuousPressTimeInterval, target: self, selector: #selector(p_handleContinuousPressTimer(_:)), userInfo: nil, repeats: true)
     }
 
-    func p_handleContinuousPressTimer(_ timer: Timer) {
+    @objc func p_handleContinuousPressTimer(_ timer: Timer) {
         guard self.isTracking else {
             self.p_cancelContinousPressIfNeeded()
             return

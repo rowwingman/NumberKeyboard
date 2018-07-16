@@ -12,7 +12,8 @@ import UIKit
 // keyInput how to set when textField is become first responder
 
 /// A simple keyboard to use with numbers and, optionally, a decimal point.
-@objc class NumberKeyboard: UIInputView, UIInputViewAudioFeedback {
+@available(iOS 9.0, *)
+@objcMembers class NumberKeyboard: UIInputView, UIInputViewAudioFeedback {
 
     // MARK: - UIInputViewAudioFeedback
     var enableInputClicksWhenVisible: Bool = true
@@ -87,7 +88,7 @@ import UIKit
         var buttonFont : UIFont
         var doneButtonFont : UIFont
         if #available(iOS 8.2, *) {
-            buttonFont = UIFont.systemFont(ofSize: 28.0, weight: UIFontWeightLight)
+            buttonFont = UIFont.systemFont(ofSize: 28.0, weight: UIFont.Weight.light)
             doneButtonFont = UIFont.systemFont(ofSize: 17.0)
         }
         else {
@@ -217,7 +218,7 @@ import UIKit
             - image: The image to display in the key.
             - handler: A handler block.
      */
-    func configureSpecialKey(image: UIImage?, actionHandler handler: dispatch_block_t) {
+    func configureSpecialKey(image: UIImage?, actionHandler handler: ()->()) {
 //        if (image) {
 //            self.specialKeyHandler = handler;
 //        } else {

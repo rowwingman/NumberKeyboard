@@ -10,6 +10,7 @@ import Foundation
 
 
 /// Defines the messages sent to a delegate object as part of the sequence of editing text. All of the methods of this protocol are optional.
+@available(iOS 9.0, *)
 @objc protocol NumberKeyboardDelegate : class {
 
     /// Asks whether the specified text should be inserted.
